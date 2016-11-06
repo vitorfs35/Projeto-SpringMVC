@@ -1,8 +1,10 @@
 package br.com.casadocodigo.loja.conf;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.*;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.format.datetime.*;
+import org.springframework.format.support.*;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
@@ -11,14 +13,33 @@ import br.com.casadocodigo.loja.daos.ProductDAO;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackageClasses={HomeController.class,ProductDAO.class})
+@ComponentScan(basePackageClasses = { HomeController.class, ProductDAO.class })
 public class AppWebConfiguration {
 
 	@Bean
 	public InternalResourceViewResolver internalResourceViewResolver() {
-	  InternalResourceViewResolver resolver = new InternalResourceViewResolver();
-	  resolver.setPrefix("/WEB-INF/views/");
-	  resolver.setSuffix(".jsp");	 
-	  return resolver;
+		InternalResourceViewResolver resolver = new InternalResourceViewResolver();
+		resolver.setPrefix("/WEB-INF/views/");
+		resolver.setSuffix(".jsp");
+		return resolver;
 	}
+
+	@Bean
+	public MessageSource messageSource() {
+		ReloadableResourceBundleMessageSource bundle = new ReloadableResourceBundleMessageSource();
+		bundle.setBasename("/WEB-INF/messages");
+		bundle.setDefaultEncoding("UTF-8");
+		bundle.setCacheSeconds(1);
+		return bundle;
+	}
+
+	@Bean
+	public FormattingConversionService mvcConversionService() {
+		DefaultFormattingConversionService conversionService = new DefaultFormattingConversionService(true);
+		DateFormatterRegistrar registrar = new DateFormatterRegistrar();
+		registrar.setFormatter(new DateFormatter("yyyy-MM-dd"));
+		registrar.registerFormatters(conversionService);
+		return conversionService;
+	}
+
 }
