@@ -5,15 +5,18 @@ import org.springframework.context.annotation.*;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.format.datetime.*;
 import org.springframework.format.support.*;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 import br.com.casadocodigo.loja.controllers.HomeController;
 import br.com.casadocodigo.loja.daos.ProductDAO;
+import br.com.casadocodigo.loja.infra.FileSaver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackageClasses = { HomeController.class, ProductDAO.class })
+@ComponentScan(basePackageClasses = { HomeController.class, ProductDAO.class, FileSaver.class})
 public class AppWebConfiguration {
 
 	@Bean
@@ -40,6 +43,10 @@ public class AppWebConfiguration {
 		registrar.setFormatter(new DateFormatter("yyyy-MM-dd"));
 		registrar.registerFormatters(conversionService);
 		return conversionService;
+	}	
+	
+	@Bean
+	public MultipartResolver multipartResolver(){
+		return new StandardServletMultipartResolver();
 	}
-
 }
