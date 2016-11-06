@@ -1,5 +1,8 @@
 package br.com.casadocodigo.loja.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,6 +16,9 @@ public class Product {
 	@Lob
 	private String description;
 	private int pages;
+	
+	@ElementCollection
+	private List<Price> prices = new ArrayList<Price>();
 	
 	public String getTitle() {
 		return title;
