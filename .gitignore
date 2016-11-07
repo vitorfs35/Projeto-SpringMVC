@@ -4,7 +4,9 @@ target
 .classpath
 .project
 .settings
-src/main/webapp/META-INF
-.idea
-*.iml
-imagens-textos-livro
+src/main/webapp/META-INF 
+.idea 
+*.iml 
+imagens-textos-livro 
++jsonData.txt 
++output.txt 
