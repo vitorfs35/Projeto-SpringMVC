@@ -3,6 +3,8 @@ package br.com.casadocodigo.loja.controllers;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -32,11 +34,12 @@ public class ProductsController {
 	private FileSaver fileSaver;
 
 	@InitBinder
-	protected void InitBinder(WebDataBinder binder){
-		
+	protected void InitBinder(WebDataBinder binder) {
+
 	}
-	
+
 	@RequestMapping(method = RequestMethod.POST)
+	@CacheEvict(value="books", allEntries=true)
 	public ModelAndView save(MultipartFile summary, @Valid Product product, BindingResult bindingResult,
 			RedirectAttributes redirectAttributes) {
 		if (bindingResult.hasErrors()) {
@@ -61,6 +64,7 @@ public class ProductsController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
+	@Cacheable(value="books")
 	public ModelAndView list() {
 		ModelAndView modelAndView = new ModelAndView("produtos/list");
 		modelAndView.addObject("products", products.list());

@@ -2,8 +2,6 @@ package br.com.casadocodigo.loja.service;
 
 import java.math.BigDecimal;
 
-import javax.xml.ws.Response;
-
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.context.request.async.DeferredResult;
