@@ -1,5 +1,7 @@
 package br.com.casadocodigo.loja.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -39,7 +42,7 @@ public class ProductsController {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	@CacheEvict(value="books", allEntries=true)
+	@CacheEvict(value = "books", allEntries = true)
 	public ModelAndView save(MultipartFile summary, @Valid Product product, BindingResult bindingResult,
 			RedirectAttributes redirectAttributes) {
 		if (bindingResult.hasErrors()) {
@@ -64,12 +67,21 @@ public class ProductsController {
 	}
 
 	@RequestMapping(method = RequestMethod.GET)
-	@Cacheable(value="books")
+	@Cacheable(value = "lastProducts")
 	public ModelAndView list() {
-		ModelAndView modelAndView = new ModelAndView("produtos/list");
+		ModelAndView modelAndView = new ModelAndView("products/list");
 		modelAndView.addObject("products", products.list());
 		return modelAndView;
 	}
+
+	/*
+	 * @RequestMapping(method = RequestMethod.GET)
+	 * 
+	 * @Cacheable(value="books") public ModelAndView list() { ModelAndView
+	 * modelAndView = new ModelAndView("produtos/list");
+	 * modelAndView.addObject("products", products.list()); return modelAndView;
+	 * }
+	 */
 
 	@RequestMapping("/{id}")
 	public ModelAndView show(@PathVariable("id") Integer id) {
@@ -77,6 +89,12 @@ public class ProductsController {
 		Product product = products.find(id);
 		modelAndView.addObject("product", product);
 		return modelAndView;
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "json")
+	@ResponseBody
+	public List<Product> listJson() {
+		return products.list();
 	}
 
 }
