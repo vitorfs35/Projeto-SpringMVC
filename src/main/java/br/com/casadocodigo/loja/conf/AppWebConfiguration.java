@@ -31,7 +31,7 @@ import br.com.casadocodigo.loja.viewresolver.JsonViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackageClasses = { HomeController.class, ProductDAO.class, FileSaver.class, ShoppingCart.class})
+@ComponentScan(basePackageClasses = { HomeController.class, ProductDAO.class, FileSaver.class, ShoppingCart.class })
 @EnableCaching
 public class AppWebConfiguration {
 
@@ -43,7 +43,7 @@ public class AppWebConfiguration {
 		resolver.setExposedContextBeanNames("shoppingCart");
 		return resolver;
 	}
-	
+
 	@Bean
 	public MessageSource messageSource() {
 		ReloadableResourceBundleMessageSource bundle = new ReloadableResourceBundleMessageSource();
@@ -60,33 +60,34 @@ public class AppWebConfiguration {
 		registrar.setFormatter(new DateFormatter("yyyy-MM-dd"));
 		registrar.registerFormatters(conversionService);
 		return conversionService;
-	}	
-	
+	}
+
 	@Bean
-	public MultipartResolver multipartResolver(){
+	public MultipartResolver multipartResolver() {
 		return new StandardServletMultipartResolver();
 	}
-	
+
 	@Bean
-	public RestTemplate restTemplate(){
+	public RestTemplate restTemplate() {
 		return new RestTemplate();
 	}
-	
+
 	@Bean
-	public CacheManager cacheManager(){
-		CacheBuilder<Object,Object> builder = CacheBuilder.newBuilder().maximumSize(100).expireAfterAccess(5,TimeUnit.MINUTES);
+	public CacheManager cacheManager() {
+		CacheBuilder<Object, Object> builder = CacheBuilder.newBuilder().maximumSize(100).expireAfterAccess(5,
+				TimeUnit.MINUTES);
 		GuavaCacheManager cacheManager = new GuavaCacheManager();
 		cacheManager.setCacheBuilder(builder);
 		return cacheManager;
 	}
-	
+
 	@Bean
-	public ViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager){
+	public ViewResolver contentNegotiatingViewResolver(ContentNegotiationManager manager) {
 		List<ViewResolver> resolvers = new ArrayList<ViewResolver>();
-		
+
 		resolvers.add(internalResourceViewResolver());
 		resolvers.add(new JsonViewResolver());
-		
+
 		ContentNegotiatingViewResolver resolver = new ContentNegotiatingViewResolver();
 		resolver.setViewResolvers(resolvers);
 		resolver.setContentNegotiationManager(manager);
