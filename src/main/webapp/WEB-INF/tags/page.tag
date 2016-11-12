@@ -20,9 +20,13 @@
 <title>${title}</title>
 </head>
 <body class="${bodyClass}">
+
 	<%@include file="/WEB-INF/header.jsp"%>
+
 	<jsp:doBody />
+
 	<%@include file="/WEB-INF/footer.jsp"%>
-	<jsp:invoke fragment="extraScripts">
+
 </body>
 </html>
+<jsp:invoke fragment="extraScripts">

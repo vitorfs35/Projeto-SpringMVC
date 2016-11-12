@@ -13,14 +13,16 @@
 
 	<security:authorize access="isAuthenticated()">
 		<security:authentication property="principal" var="user" />
-		<div>Olá ${user.name}</div>
+		<spring:message code="users.welcome" arguments="${user.name}" />
 	</security:authorize>
+	<div>${success}</div>
 
-	<security:authorize access="hasRole('ROLE_ADMIN')">
-		<li><a href="${spring:mvcUrl('PC#form').build()}"> Cadastrar
-				novo produto</a></li>
-	</security:authorize>
-
+	<ul class="menu">
+		<security:authorize access="hasRole('ROLE_ADMIN')">
+			<li><a href="${spring:mvcUrl('PC#form').build()}"> Cadastrar
+					novo produto</a></li>
+		</security:authorize>
+	</ul>
 
 	<table>
 		<tr>

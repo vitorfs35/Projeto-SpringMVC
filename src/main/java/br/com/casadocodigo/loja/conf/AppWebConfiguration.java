@@ -16,10 +16,10 @@ import org.springframework.web.accept.ContentNegotiationManager;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.*;
 import org.springframework.web.multipart.support.StandardServletMultipartResolver;
-import org.springframework.web.servlet.ViewResolver;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.view.ContentNegotiatingViewResolver;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.*;
+import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.i18n.*;
+import org.springframework.web.servlet.view.*;
 
 import com.google.common.cache.CacheBuilder;
 
@@ -33,7 +33,7 @@ import br.com.casadocodigo.loja.viewresolver.JsonViewResolver;
 @EnableWebMvc
 @ComponentScan(basePackageClasses = { HomeController.class, ProductDAO.class, FileSaver.class, ShoppingCart.class })
 @EnableCaching
-public class AppWebConfiguration {
+public class AppWebConfiguration extends WebMvcConfigurerAdapter {
 
 	@Bean
 	public InternalResourceViewResolver internalResourceViewResolver() {
@@ -92,5 +92,15 @@ public class AppWebConfiguration {
 		resolver.setViewResolvers(resolvers);
 		resolver.setContentNegotiationManager(manager);
 		return resolver;
+	}
+
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new LocaleChangeInterceptor());
+	}
+
+	@Bean
+	public LocaleResolver localeResolver() {
+		return new CookieLocaleResolver();
 	}
 }
